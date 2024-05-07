@@ -28,6 +28,7 @@ import pickle
 
 import dgl
 import torch
+import math
 
 
 def main(data_dir, design, mcmm, num_samples, path_file):
@@ -142,7 +143,7 @@ def main(data_dir, design, mcmm, num_samples, path_file):
     pin_df["is_inv"] = pin_df["is_inv"].fillna(False)
     pin_df["is_seq"] = pin_df["is_seq"].fillna(False)
 
-    pin_df.loc[pin_df.cap == 0.0, ["cap"]] = -1.0
+    pin_df.loc[math.isclose(pin_df.cap, 0.0, rel_tol=1e-09, abs_tol=0.0), ["cap"]] = -1.0
     pin_df.loc[pin_df.maxcap > 10, ["maxcap"]] = -1.0
 
     pin_names = pin_df["name"].to_list()
